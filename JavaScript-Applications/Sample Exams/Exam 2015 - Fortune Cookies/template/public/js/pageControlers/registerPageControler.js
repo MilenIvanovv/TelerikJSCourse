@@ -49,7 +49,7 @@ function register() {
 //build
 async function buildRegisterPage() {
     await renderRegisterPage();
-    await attachingRegisterPageEvents(); 
+    attachingRegisterPageEvents(); 
     $(window).trigger("buildFinished");
 }
 

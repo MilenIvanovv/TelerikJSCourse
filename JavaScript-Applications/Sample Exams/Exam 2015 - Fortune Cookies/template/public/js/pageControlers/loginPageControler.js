@@ -53,7 +53,7 @@ function login() {
 //build
 async function buildLoginPage() {
     await renderLoginPage();
-    await attachingLoginPageEvents(); 
+    attachingLoginPageEvents(); 
     $(window).trigger("buildFinished");
 }
 

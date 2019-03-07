@@ -1,5 +1,5 @@
 import MyRouter from "./myRouter.js";
-import {homePage} from "./pageControlers/homePageControler.js";
+import buildHomePage from "./pageControlers/homePageControler.js";
 import buildLoginPage from "./pageControlers/loginPageControler.js";
 import buildRegisterPage from "./pageControlers/registerPageControler.js";
 
@@ -9,7 +9,7 @@ function setupRouter() {
     window.addEventListener("load",router.navigate);
     window.addEventListener("hashchange",router.navigate);
     
-    router.on("#/home",homePage)
+    router.on("#/home",buildHomePage)
         .on("#/register",buildRegisterPage)
         .on("#/login",buildLoginPage);
 }
