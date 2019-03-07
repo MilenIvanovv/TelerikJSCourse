@@ -6,7 +6,7 @@ const routing = (() => {
         $container = $('#content');
     
     function showMsg(msg, type, cssClass, delay) {
-        templateLoader.get('alert')
+        tl.get('alert')
             .then((alertTemplate) => {
                 let container = $(alertTemplate).clone(true)
                     .addClass(cssClass).text(`${type}: ${msg}`)

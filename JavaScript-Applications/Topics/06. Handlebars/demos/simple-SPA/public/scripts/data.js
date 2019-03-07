@@ -1,5 +1,6 @@
 var data = (function () {
   const USERNAME_STORAGE_KEY = 'username-key';
+  console.log($);
 
   // start users
   function userLogin(user) {
