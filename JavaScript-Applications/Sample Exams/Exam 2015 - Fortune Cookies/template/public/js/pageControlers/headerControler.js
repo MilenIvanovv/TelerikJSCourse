@@ -1,4 +1,5 @@
 import renderTemp from "../loadTemp.js";
+import {logout} from "../features/features.js";
 
 //rendering,appending
 function renderHeader() {
@@ -13,17 +14,19 @@ function renderHeader() {
 
 //attaching events listeners
 function attachingHeaderEvents() {
-    $("#logout-btn").click(logout);
+    $("#logout-btn").click(logoutAndRebuld);
 }
 
-//Page features
-function logout() {
-    window.localStorage.removeItem("userData");
-    window.localStorage.removeItem("isLogged");
-}
 
 //build
-async function buildHeader() {
+async function logoutAndRebuld(event) {
+    logout(event);
+    buildHeader();
+}
+
+
+
+export async function buildHeader() {
     await renderHeader();
     attachingHeaderEvents();
     $(window).trigger("buildFinished");

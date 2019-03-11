@@ -1,23 +1,24 @@
 import renderTemp from "../loadTemp.js";
-import {getAllcookies} from "../features/features.js";
+import {getHourlyCookie} from "../features/features.js";
 import {like} from "../features/features.js";
 import {dislike} from "../features/features.js";
 
 //rendering,appending
-function renderHomePage() {
+function renderHourlyPage(result) {
     const container = $("#container");
     //renderTemp
-
-    return renderTemp(container,"homePage");
+    return renderTemp(container,"hourlyCookie",result);
     //other stuff
 }
 
 function renderAllCookies(result) {
-    const container = $("#cookies");
+    const container = $(".cookies");
     //renderTemp
     return renderTemp(container,"cookies",result);
     //other stuff
 }
+
+
 
 //attaching events listeners
 function attachingCookiesEvents() {
@@ -27,32 +28,32 @@ function attachingCookiesEvents() {
 
 
 //build
-async function buildHomePage() {
-    await renderHomePage();
-    buldCookies();
-}
 
 async function likeAndRebuild(event) {
     await like(event);
-    buldCookies();
+    buildHourlyCookie();
 }
 
 async function dislikeAndRebuild(event) {
     await dislike(event);
-    buldCookies();
+    buildHourlyCookie();
 }
 
-async function buldCookies() {
-    let data = await getAllcookies();
-    await renderAllCookies(data);
+async function buildHourlyCookie() {
+    let data = await getHourlyCookie();
+    let array = [data.result]
+    let obj = {
+        result:array
+    }
+    await renderHourlyPage();
+    await renderAllCookies(obj);
     await attachingCookiesEvents();
     $(window).trigger("buildFinished");
 }
-
 //tools
 
 //exports
-export default buildHomePage;
+export default buildHourlyCookie;
 
 
 

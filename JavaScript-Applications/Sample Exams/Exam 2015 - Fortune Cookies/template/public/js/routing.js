@@ -3,6 +3,7 @@ import buildHomePage from "./pageControlers/homePageControler.js";
 import buildLoginPage from "./pageControlers/loginPageControler.js";
 import buildRegisterPage from "./pageControlers/registerPageControler.js";
 import buildShareCookie from "./pageControlers/shareCookieControler.js";
+import buildHourlyCookie from "./pageControlers/hourlyCookieControler.js";
 
 function setupRouter() {
     const router = new MyRouter(buildHomePage);
@@ -12,6 +13,7 @@ function setupRouter() {
     
     router.on("#/register",buildRegisterPage)
         .on("#/login",buildLoginPage)
+        .on("#/my-cookie",buildHourlyCookie)
         .on("#/share",buildShareCookie);
 }
 

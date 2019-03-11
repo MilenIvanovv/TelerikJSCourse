@@ -1,5 +1,6 @@
 
 import renderTemp from "../loadTemp.js";
+import {share} from "../features/features.js";
 
 //rendering,appending
 function renderShareCookie() {
@@ -18,40 +19,7 @@ function attachingShareCookieEvents() {
     $("#share-btn").click(share);
 }
 
-//Page features
-function share() {
 
-    let userData = JSON.stringify({
-        text: $("#cookie-text").val(),
-        category: $("#cookie-category").val()
-    });
-
-    let register = new Promise((resolve,reject) => {
-        $.ajax({
-            method:"POST",
-            url: "api/cookies",
-            headers: { 
-                "Content-Type": "application/json",
-                "x-auth-key": window.localStorage.getItem("authKey") 
-            },
-            data: userData,
-            success: resolve,
-            error: reject
-        });
-    });
-
-    register
-    .then((data) => {
-        alert("share success!");
-        console.log(data);
-    })
-    .catch((error) => {
-        alert("fail");
-        console.log(error.responseText);
-    })
-
-    return register;
-}
 
 //build
 async function buildShareCookie() {

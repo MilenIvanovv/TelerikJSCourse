@@ -1,5 +1,6 @@
 import renderTemp from "../loadTemp.js";
-import {setupUserProfile} from "../user.js";
+import {login} from "../features/features.js";
+import {buildHeader} from "../pageControlers/headerControler.js";
 
 //rendering,appending
 function renderLoginPage() {
@@ -11,44 +12,14 @@ function renderLoginPage() {
 
 //attaching events listeners
 function attachingLoginPageEvents() {
-    $("#login-btn").click(login);
+    $("#login-btn").click(loingAndRebuild);
 }
 
-//Page features
-function login() {
-
-    let userData = JSON.stringify({
-        username: $("#username-log").val(),
-        passHash: $("#password-log").val()
-    });
-
-    let login = new Promise((resolve,reject) => {
-        $.ajax({
-            method:"PUT",
-            url: "api/auth",
-            headers: { "Content-Type": "application/json" },
-            data: userData,
-            success: resolve,
-            dataType:"json",
-            error: (err) => {
-                console.log(err);
-            }
-        });
-    });
-
-    login
-    .then((data) => {
-        alert("login success!");
-        setupUserProfile(data);
-        console.log(data);
-    })
-    .catch((error) => {
-        alert("fail!");
-        console.log(error.responseText);
-    })
-
-    return login;
+async function loingAndRebuild(event) {
+    await login(event);
+    buildHeader();
 }
+
 
 //build
 async function buildLoginPage() {
