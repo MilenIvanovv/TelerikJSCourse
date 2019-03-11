@@ -1,6 +1,7 @@
 export default class MyRouter {
-    constructor() {
+    constructor(homePageCallBack) {
         this._routes = []; //"_" as if its private
+        this.homePage = homePageCallBack;
     }
     
     on = (pageHash,callback) => {
@@ -17,8 +18,10 @@ export default class MyRouter {
         for (let i = 0; i < len; i++) {
             if(this.constructor.doHashMatch(this._routes[i].hash)){
                 this._routes[i].callback();
+                return;
             }            
         }
+        this.homePage();
     }
 
     static doHashMatch(pageHash){

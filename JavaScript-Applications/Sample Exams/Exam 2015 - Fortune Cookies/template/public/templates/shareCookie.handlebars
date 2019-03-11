@@ -1,0 +1,11 @@
+{{#if isLogged}}
+    <div id="share-cookie">
+        <input id="cookie-text" type="text" placeholder="text">
+        <input id="cookie-category" type="text" placeholder="category">
+        <button id="share-btn">Share</button>
+    </div>
+    {{else}}
+    <div>
+        <h1>Not logged in</h1>
+    </div>
+{{/if}}
