@@ -11,7 +11,8 @@ function setupRouter() {
     window.addEventListener("load",router.navigate);
     window.addEventListener("hashchange",router.navigate);
     
-    router.on("#/register",buildRegisterPage)
+    router.on("#/home",buildHomePage)
+        .on("#/register",buildRegisterPage)
         .on("#/login",buildLoginPage)
         .on("#/my-cookie",buildHourlyCookie)
         .on("#/share",buildShareCookie);

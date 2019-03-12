@@ -18,8 +18,6 @@ function renderAllCookies(result) {
     //other stuff
 }
 
-
-
 //attaching events listeners
 function attachingCookiesEvents() {
     $(".like").click(likeAndRebuild);
@@ -28,7 +26,6 @@ function attachingCookiesEvents() {
 
 
 //build
-
 async function likeAndRebuild(event) {
     await like(event);
     buildHourlyCookie();

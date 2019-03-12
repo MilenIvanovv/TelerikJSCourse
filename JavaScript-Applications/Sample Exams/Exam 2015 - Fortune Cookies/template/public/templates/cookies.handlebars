@@ -1,14 +1,23 @@
-
 {{#each result}}
-    <div class="cookie" data={{id}}>
-        <h1>Category:<span class="category">{{category}}</span></h1>
-        <p>Text:<span class="text">{{text}}</span></p>
-        <p>
-            <a class="like">Likes:{{likes}}</a>
-            <a class="dislike">Dislikes:{{dislikes}}</a>
-        </p>
-        <img src={{img}}>
-        <p>Data:{{shareDate}}</p>
-        <button class="re-share-btn">Re-share Cookie</button>
-    </div>
+<div class="cookie" data={{id}}>
+    <h1>Category:
+        <span class="category">
+            {{category}}
+        </span>
+    </h1>
+    <img src={{img}}>
+    <p>
+        Text:<span class="text">
+            {{text}}
+        </span>
+    </p>
+    <p>
+        <button class="like">Likes:{{likes}}</button>
+        <button class="dislike">Dislikes:{{dislikes}}</button>
+    </p>
+    <p>
+        Data:{{shareDate}}
+    </p>
+    <button class="re-share-btn">Re-share Cookie</button>
+</div>
 {{/each}}

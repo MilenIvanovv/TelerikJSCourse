@@ -3,7 +3,7 @@ import {setupUserProfile} from "../user.js";
 //Page features
 export function logout() {
     window.localStorage.removeItem("userData");
-    window.localStorage.setItem("isLogged",false);
+    window.localStorage.removeItem("isLogged");
     window.localStorage.removeItem("authKey");
 }
 
@@ -25,7 +25,7 @@ export function getAllcookies() {
 
     promise
     .then((data) => {
-        console.log(data);
+        // console.log(data);
     })
     .catch((error) => {
         alert("fail");
@@ -52,7 +52,6 @@ export function getHourlyCookie() {
 
     promise
     .then((data) => {
-        console.log(data);
     })
     .catch((error) => {
         alert("fail");
@@ -80,7 +79,8 @@ export function like(event) {
 
     promise
     .then((data) => {
-        console.log(data);
+        $(window).trigger("cookieChange");
+        $(window).trigger("headerChnage");
     })
     .catch((error) => {
         alert("fail");
@@ -109,7 +109,8 @@ export function dislike(event) {
 
     promise
     .then((data) => {
-        console.log(data);
+        $(window).trigger("cookieChange");
+        $(window).trigger("headerChnage");
     })
     .catch((error) => {
         alert("fail");
@@ -143,9 +144,11 @@ export function login() {
 
     login
     .then((data) => {
+        $(window).trigger("headerChnage");
+
         alert("login success!");
         setupUserProfile(data);
-        console.log(data);
+        // console.log(data);
     })
     .catch((error) => {
         alert("fail!");
@@ -179,7 +182,7 @@ export function register() {
     register
     .then((data) => {
         alert("register success!");
-        console.log(data);
+        // console.log(data);
     })
     .catch((error) => {
         alert("fail");
@@ -218,8 +221,7 @@ export function share() {
 
     promise
     .then((data) => {
-        alert("share success!");
-        console.log(data);
+        // console.log(data);
     })
     .catch((error) => {
         alert("fail");
@@ -257,24 +259,24 @@ export function reShare(event) {
 
     promise
     .then((data) => {
-        alert("share success!");
-        console.log(data);
+        $(window).trigger("cookieChange");
     })
     .catch((error) => {
-        alert(error.responseText);
         console.log(error.responseText);
     })
 
     return promise;
 }
 
-export function filterByCategory(data) {
+export function filter(selectedCategory,data) {
     let cookies = data.result;
-    let selectedCategory = $("#category-search").val();
     let filteredCookies = [];
+
+    if(selectedCategory === ""){
+        return data;
+    }
    
     for (let i = 0, len = cookies.length; i < len ; i++) {
-        debugger;
         if(cookies[i].category === selectedCategory)  {
             filteredCookies.push(cookies[i]);
         }     
@@ -295,11 +297,8 @@ export function getCategories() {
 
     promise
     .then((data) => {
-        alert("success!");
-        console.log(data);
     })
     .catch((error) => {
-        alert(error.responseText);
         console.log(error.responseText);
     })
 

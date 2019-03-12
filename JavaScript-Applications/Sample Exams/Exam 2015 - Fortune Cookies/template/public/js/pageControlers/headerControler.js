@@ -29,7 +29,6 @@ async function logoutAndRebuld(event) {
 export async function buildHeader() {
     await renderHeader();
     attachingHeaderEvents();
-    $(window).trigger("buildFinished");
 }
 
 //tools

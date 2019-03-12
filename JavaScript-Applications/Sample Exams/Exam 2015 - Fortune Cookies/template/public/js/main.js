@@ -2,9 +2,10 @@
 import setupRouter from "./routing.js";
 import buildHeader from "./pageControlers/headerControler.js";
 
-
 //gloabl events
-$(window).on("buildFinished", () => console.log("buildFinished"));
+$(window).on("buildFinished", () => {});
+
+
 //header
 buildHeader();
 //router

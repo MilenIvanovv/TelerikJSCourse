@@ -1,7 +1,11 @@
 <h1>Home Page</h1>
-<select id="category-search">
+Filter:<select id="category-search">
     {{#each result}}
         <option >{{this}}</option>
     {{/each}}
+</select>
+Sort:<select id="cookies-sort">
+    <option>Likes</option>
+    <option>Date</option>
 </select>
 <div id="cookies"></div>

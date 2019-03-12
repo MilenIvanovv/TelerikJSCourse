@@ -3,76 +3,107 @@ import {getAllcookies} from "../features/features.js";
 import {like} from "../features/features.js";
 import {dislike} from "../features/features.js";
 import {reShare} from "../features/features.js";
-import {filterByCategory} from "../features/features.js";
+import {filter as filter} from "../features/features.js";
 import {getCategories} from "../features/features.js";
+
+//tools
+
+
+function sort(data,propery) {
+    if(propery === "Likes"){
+        data.result.sort(compareLikes);
+    }
+    if(propery === "Date"){
+        data.result.sort(compareDates);
+    }
+    return data;
+}
+
+function compareLikes(a,b) {
+    if (a.likes > b.likes)
+        return -1;
+    if (a.likes < b.likes)
+        return 1;
+    return 0;
+}
+
+function compareDates(a,b){
+    return new Date(b.shareDate) - new Date(a.shareDate);
+};
+
 
 //rendering,appending
 function renderHomePage(result) {
     const container = $("#container");
-    //renderTemp
-
     return renderTemp(container,"homePage",result);
-    //other stuff
 }
 
-function renderAllCookies(result) {
+function renderCookies(result) {
     const container = $("#cookies");
-    //renderTemp
     return renderTemp(container,"cookies",result);
-    //other stuff
 }
 
 //attaching events listeners
 function attachingHomePageEvents() {
-    $("#category-search").change(filterAndBuild);
+    $("#category-search").change(changeFilterPropertyHandler);
+    $("#cookies-sort").change(changeSortPropertyHandler);
 }
 
 function attachingCookiesEvents() {
-    $(".like").click(likeAndRebuild);
-    $(".dislike").click(dislikeAndRebuild);
-    $(".re-share-btn").click(reshareAndReBuild);
+    $(".like").click(like);
+    $(".dislike").click(dislike);
+    $(".re-share-btn").click(reShare);
+}
+
+//Event handlers
+function changeSortPropertyHandler(event) {
+    let propery = $(event.target).val();
+    changeCookieSort(propery);
+}
+
+function changeFilterPropertyHandler(event) {
+    let propery = $(event.target).val();
+    changeCookieFilter(propery);
 }
 
 
 //build
-async function filterAndBuild() {
-    let data = await getAllcookies();
-    let cookies = filterByCategory(data);
-    await renderAllCookies(cookies);
-    await attachingCookiesEvents();
-    $(window).trigger("buildFinished");
-}
+async function buildHomePage(queryParams) {
+    $(window).on("cookieChange",loadCookies);
 
-async function buildHomePage() {
+
+
     let data = await getCategories();
-    await renderHomePage(data);
+    await renderHomePage(data); //categories are needed for a dropdown menu in HomePage component
     attachingHomePageEvents();
-    buildAllCookies();
+    if(queryParams){
+        changeCookieFilter(queryParams.category);
+        return;
+    }
+    $(window).trigger("cookieChange");
 }
 
-async function likeAndRebuild(event) {
-    await like(event);
-    buildAllCookies();
+function changeCookieSort(propery) {
+    window.localStorage.property = propery;
+    $(window).trigger("cookieChange");
 }
 
-async function dislikeAndRebuild(event) {
-    await dislike(event);
-    buildAllCookies();
+function changeCookieFilter(category) {
+    window.localStorage.category = category;
+    $(window).trigger("cookieChange");
 }
 
-async function reshareAndReBuild(event) {
-    await reShare(event);
-    buildAllCookies();
-}
 
-async function buildAllCookies() {
+async function loadCookies() {
+    let category = window.localStorage.getItem("category") || "";
+    let propery = window.localStorage.getItem("property") || "Likes";
     let data = await getAllcookies();
-    await renderAllCookies(data);
+    data = filter(category,data);
+    data = sort(data,propery);
+    await renderCookies(data);
     await attachingCookiesEvents();
-    $(window).trigger("buildFinished");
 }
 
-//tools
 
 //exports
 export default buildHomePage;
