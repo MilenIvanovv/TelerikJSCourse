@@ -2,13 +2,16 @@ import renderTemp from "../loadTemp.js";
 import {getAllcookies} from "../features/features.js";
 import {like} from "../features/features.js";
 import {dislike} from "../features/features.js";
+import {reShare} from "../features/features.js";
+import {filterByCategory} from "../features/features.js";
+import {getCategories} from "../features/features.js";
 
 //rendering,appending
-function renderHomePage() {
+function renderHomePage(result) {
     const container = $("#container");
     //renderTemp
 
-    return renderTemp(container,"homePage");
+    return renderTemp(container,"homePage",result);
     //other stuff
 }
 
@@ -20,29 +23,49 @@ function renderAllCookies(result) {
 }
 
 //attaching events listeners
+function attachingHomePageEvents() {
+    $("#category-search").change(filterAndBuild);
+}
+
 function attachingCookiesEvents() {
     $(".like").click(likeAndRebuild);
     $(".dislike").click(dislikeAndRebuild);
+    $(".re-share-btn").click(reshareAndReBuild);
 }
 
 
 //build
+async function filterAndBuild() {
+    let data = await getAllcookies();
+    let cookies = filterByCategory(data);
+    await renderAllCookies(cookies);
+    await attachingCookiesEvents();
+    $(window).trigger("buildFinished");
+}
+
 async function buildHomePage() {
-    await renderHomePage();
-    buldCookies();
+    let data = await getCategories();
+    await renderHomePage(data);
+    attachingHomePageEvents();
+    buildAllCookies();
 }
 
 async function likeAndRebuild(event) {
     await like(event);
-    buldCookies();
+    buildAllCookies();
 }
 
 async function dislikeAndRebuild(event) {
     await dislike(event);
-    buldCookies();
+    buildAllCookies();
 }
 
-async function buldCookies() {
+async function reshareAndReBuild(event) {
+    await reShare(event);
+    buildAllCookies();
+}
+
+async function buildAllCookies() {
     let data = await getAllcookies();
     await renderAllCookies(data);
     await attachingCookiesEvents();

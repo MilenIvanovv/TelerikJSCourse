@@ -20,7 +20,7 @@ function attachingHeaderEvents() {
 
 //build
 async function logoutAndRebuld(event) {
-    logout(event);
+    logout();
     buildHeader();
 }
 

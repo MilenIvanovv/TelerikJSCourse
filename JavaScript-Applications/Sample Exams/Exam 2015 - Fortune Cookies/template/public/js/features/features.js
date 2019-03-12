@@ -3,7 +3,8 @@ import {setupUserProfile} from "../user.js";
 //Page features
 export function logout() {
     window.localStorage.removeItem("userData");
-    window.localStorage.removeItem("isLogged");
+    window.localStorage.setItem("isLogged",false);
+    window.localStorage.removeItem("authKey");
 }
 
 //Page features
@@ -201,7 +202,7 @@ export function share() {
         userData.img = img.val()
     }
 
-    let register = new Promise((resolve,reject) => {
+    let promise = new Promise((resolve,reject) => {
         $.ajax({
             method:"POST",
             url: "api/cookies",
@@ -215,7 +216,7 @@ export function share() {
         });
     });
 
-    register
+    promise
     .then((data) => {
         alert("share success!");
         console.log(data);
@@ -225,5 +226,82 @@ export function share() {
         console.log(error.responseText);
     })
 
-    return register;
+    return promise;
+}
+
+export function reShare(event) {
+    let target = $(event.target);
+
+    let userData = {
+        text: target.parent().find(".text").text(),
+        category: target.parent().find(".category").text()
+    };
+    let img = target.parent().find("img");
+    if(img.length){
+        userData.img = img.attr("src")
+    }
+
+    let promise = new Promise((resolve,reject) => {
+        $.ajax({
+            method:"POST",
+            url: "api/cookies",
+            headers: { 
+                "Content-Type": "application/json",
+                "x-auth-key": window.localStorage.getItem("authKey") 
+            },
+            data: JSON.stringify(userData),
+            success: resolve,
+            error: reject
+        });
+    });
+
+    promise
+    .then((data) => {
+        alert("share success!");
+        console.log(data);
+    })
+    .catch((error) => {
+        alert(error.responseText);
+        console.log(error.responseText);
+    })
+
+    return promise;
+}
+
+export function filterByCategory(data) {
+    let cookies = data.result;
+    let selectedCategory = $("#category-search").val();
+    let filteredCookies = [];
+   
+    for (let i = 0, len = cookies.length; i < len ; i++) {
+        debugger;
+        if(cookies[i].category === selectedCategory)  {
+            filteredCookies.push(cookies[i]);
+        }     
+    }
+
+    return {result:filteredCookies};
+}
+
+export function getCategories() {
+    let promise = new Promise((resolve,reject) => {
+        $.ajax({
+            method:"GET",
+            url: "api/categories",
+            success: resolve,
+            error: reject
+        });
+    });
+
+    promise
+    .then((data) => {
+        alert("success!");
+        console.log(data);
+    })
+    .catch((error) => {
+        alert(error.responseText);
+        console.log(error.responseText);
+    })
+
+    return promise;
 }
